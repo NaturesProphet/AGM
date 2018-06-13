@@ -12,14 +12,12 @@ import javax.swing.JOptionPane;
  */
 public class Programa extends javax.swing.JFrame {
 
-    public static int[] pai = new int[550500];
+    public static int[] pai;
 
-    public static int procura(int x) {
-        if (pai[x] == x) {
-            return x;
-        }
-        return pai[x] = procura(pai[x]);
-    }
+public int procura(int x){
+    if(pai[x] == x) return x;
+    return pai[x];
+}
 
     /**
      * Creates new form Programa
@@ -114,7 +112,7 @@ public class Programa extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        int[] vetor = null;
+        int[] vetor = null; //Vetor vazio para receber os dados que seram lidos do arquivo
 
         //Verifica se o arquivo informado existe
         if (!Arquivo.AreYouHere(jTextField1.getText())) {
@@ -124,58 +122,72 @@ public class Programa extends javax.swing.JFrame {
                 //Se o arquivo existe os valores serão armazenados na variável vetor
                 vetor = Arquivo.getIntArray(jTextField1.getText());
 
-                int Nteste = vetor[0];
-                int vertice = vetor[1];
-                int aresta = vetor[2];
+                int Nteste = vetor[0]; //Número de testes que serão executados
+                int vertice = vetor[1]; //Número de vértices do grafo
+                int aresta = vetor[2]; //Número de arestas do grafo
 
-                Aresta a[] = new Aresta[aresta];
+                Aresta a[] = new Aresta[aresta]; // Vetor de Aresta para organizar as arestas
+                pai = new int[vertice+1]; // Vetor pai para controlar o componente de cada vértice
 
-                int indice = 0;
+                int indice = 0; //usado para controlar o indice do vetor 'a'.
 
-                //Organizando as arestas
+                //Organizando as arestas no vetor 'a'
                 for (int i = 3; i <= 3 * aresta; i = i + 3) {
+                    //Criar um nova aresta (Origem, destino, peso) e adiciona no vetor 'a'
                     a[indice] = new Aresta(vetor[i], vetor[i + 1], vetor[i + 2]);
                     indice++;
                 }
 
-                for (int i = 0; i < a.length; i++) {
-                    pai[i] = i + 1;
+                //Instanciando o vetor pai
+                for (int i = 1; i <= vertice; i++) {
+                    pai[i] = i;
                 }
+
                 //Ordenando as arestas
                 Arrays.sort(a);
 
-                //Somente para teste
-                for (int i = 0; i < a.length; i++) {
-                    System.out.println(a[i].toString());
-                }
-                for (int i = 0; i < a.length; i++) {
-                    if (pai[i] != 0) {
-                        System.out.println("Vetor pai " + i + ":" + pai[i]);
-                    } else {
-                        break;
-                    }
-                }
+               
+                int cont = vertice+1, pesoMax = 0;
+                int teste = 0, x1, y1;
+                Aresta resp[] = new Aresta[aresta];
 
-                int cont = 1, pesoMax = 0;
-
+                //Verifica cada aresta
                 for (int i = aresta - 1; i > 0; i--) {
-                    if (pai[i] != 0) {
+                    //Condição para verificar as aresta até o número de vértices -1
+                    if (teste != vertice - 1) {
+                        //Usa um outro método para verificar o pai de cada vértice
                         if (procura(a[i].x) != procura(a[i].y)) {
-                            pai[i] = cont++;
-                            pesoMax += a[i].peso;
+                            //Concatena o peso na variável
+                            pesoMax += a[i].peso;  
+                            resp[teste] = a[i];
+                            
+                                x1 = pai[a[i].x];
+                                y1 = pai[a[i].y];
+                            
+                            pai[a[i].x] = cont;
+                            pai[a[i].y] = cont; 
+                            
+                            
+                            //Percorre todo o vetor pai atualizando o conteúdo
+                            for (int j = 0; j < pai.length; j++) {
+                                if (pai[j] == x1 || pai[j] == y1) {
+                                    pai[a[i].x] = cont;
+                                    pai[a[i].y] = cont;
+                                }
+                            }
+                            cont++; //usado para controle a atualização do vetor pai
                         }
+                        teste++; //usado para controlar a quantidade de aresta que será usada
                     } else {
                         break;
                     }
                 }
-
-                for (int i = 0; i < a.length; i++) {
-                    if (pai[i] != 0) {
-                    System.out.println("Vetor: " + i + " - " + a[i].toString() + "- pai:" + pai[i]);
-                    }else
-                        break;
-                }
-
+                
+                //Exibe numa simples janela o peso máximo
+                JOptionPane.showMessageDialog(null, "Peso Máximo da árvore: "+pesoMax);
+                //Fecha o programa ecerrando a execução
+                //dispose();
+                
             } catch (Exception ex) {
                 Logger.getLogger(Programa.class
                         .getName()).log(Level.SEVERE, null, ex);
