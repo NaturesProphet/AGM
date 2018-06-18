@@ -1,5 +1,7 @@
 
 import GERAL.Arquivo;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,10 +16,65 @@ public class Programa extends javax.swing.JFrame {
 
     public static int[] pai;
 
-public int procura(int x){
-    if(pai[x] == x) return x;
-    return pai[x];
-}
+    public int procura(int x) {
+        if (pai[x] == x) {
+            return x;
+        }
+        return pai[x];
+    }
+
+    //Método que recebe o vetor de arestas e calcula o peso máximo
+    public int agm(Aresta a[], int vertice, int aresta) {
+        //Ordenando as arestas
+        Arrays.sort(a);
+        pai = new int[vertice + 1];
+        //Instanciando o vetor pai
+        for (int j = 1; j <= vertice; j++) {
+            pai[j] = j;
+        }
+
+        int cont = vertice + 1, pesoMax = 0;
+        int teste = 0, x1, y1;
+        Aresta resp[] = new Aresta[aresta];
+
+        //Verifica cada aresta
+        for (int i = aresta - 1; i > 0; i--) {
+            //Condição para verificar as aresta até o número de vértices -1
+            if (teste != vertice - 1) {
+                //Usa um outro método para verificar o pai de cada vértice
+                if (procura(a[i].x) != procura(a[i].y)) {
+                    //Concatena o peso na variável
+                    pesoMax += a[i].peso;
+                    resp[teste] = a[i];
+
+                    x1 = pai[a[i].x];
+                    y1 = pai[a[i].y];
+
+                    pai[a[i].x] = cont;
+                    pai[a[i].y] = cont;
+
+                    //Percorre todo o vetor pai atualizando o conteúdo
+                    for (int j = 0; j < pai.length; j++) {
+                        if (pai[j] == x1 || pai[j] == y1) {
+                            pai[a[i].x] = cont;
+                            pai[a[i].y] = cont;
+                        }
+                    }
+                    cont++; //usado para controle a atualização do vetor pai
+                }
+                teste++; //usado para controlar a quantidade de aresta que será usada
+            } else {
+                break;
+            }
+        }
+
+        //Exibe numa simples janela o peso máximo
+        //JOptionPane.showMessageDialog(null, "Peso Máximo da árvore: " + pesoMax);
+        //Fecha o programa ecerrando a execução
+        //dispose();
+        return pesoMax;
+
+    }
 
     /**
      * Creates new form Programa
@@ -112,82 +169,54 @@ public int procura(int x){
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        int[] vetor = null; //Vetor vazio para receber os dados que seram lidos do arquivo
+        Aresta vetor[] = null; //Vetor vazio para receber os dados que seram lidos do arquivo
 
         //Verifica se o arquivo informado existe
         if (!Arquivo.AreYouHere(jTextField1.getText())) {
             JOptionPane.showMessageDialog(null, "O arquivo não existe!");
         } else {
             try {
-                //Se o arquivo existe os valores serão armazenados na variável vetor
-                vetor = Arquivo.getIntArray(jTextField1.getText());
+                BufferedReader br = new BufferedReader(new FileReader(jTextField1.getText()));
+                int Nteste = Integer.parseInt(br.readLine()); //Lê a primeira linha do arquivo e armazena a quantidade de testes
 
-                int Nteste = vetor[0]; //Número de testes que serão executados
-                int vertice = vetor[1]; //Número de vértices do grafo
-                int aresta = vetor[2]; //Número de arestas do grafo
+                String linha; //Variável para armazena linha a linha do arquivo.
+                int o = 0, d = 0, p = 0; //Variáveis auxiliares para armazenar origem, destino e peso da aresta
 
-                Aresta a[] = new Aresta[aresta]; // Vetor de Aresta para organizar as arestas
-                pai = new int[vertice+1]; // Vetor pai para controlar o componente de cada vértice
-
-                int indice = 0; //usado para controlar o indice do vetor 'a'.
-
-                //Organizando as arestas no vetor 'a'
-                for (int i = 3; i <= 3 * aresta; i = i + 3) {
-                    //Criar um nova aresta (Origem, destino, peso) e adiciona no vetor 'a'
-                    a[indice] = new Aresta(vetor[i], vetor[i + 1], vetor[i + 2]);
-                    indice++;
+                //Somente para formatar o texto de exibição para o usuário sobre a quantidade de grafos contidos no arquivo
+                if (Nteste == 1) {
+                    JOptionPane.showMessageDialog(null, "Foi identificado " + Nteste + " grafo no arquivo.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Foram identificados " + Nteste + " grafos no arquivo.");
                 }
+                
+                //Loop para varrer o arquivo conforme a quantidade de teste
+                for (int i = 0; i < Nteste; i++) {
+                    linha = br.readLine();
+                    int vertice = Integer.parseInt(String.valueOf(linha.charAt(0))); //Armazena a quantidade de vértices do grafo
+                    int aresta = Integer.parseInt(String.valueOf(linha.charAt(2))); //Armazena a quantidade de arestas do grafo.
+                    vetor = new Aresta[aresta]; //Cria um vetor conforme o tamanho das arestas
 
-                //Instanciando o vetor pai
-                for (int i = 1; i <= vertice; i++) {
-                    pai[i] = i;
-                }
+                    //Loop para ler linha al inha do arquivo
+                    for (int j = 0; j < aresta; j++) {
+                        linha = br.readLine();
 
-                //Ordenando as arestas
-                Arrays.sort(a);
+                        o = Integer.parseInt(String.valueOf(linha.charAt(0))); //É captura a primeira posição da linha lida e convertida para inteiro
+                        d = Integer.parseInt(String.valueOf(linha.charAt(2)));
+                        p = Integer.parseInt(String.valueOf(linha.charAt(4)));
 
-               
-                int cont = vertice+1, pesoMax = 0;
-                int teste = 0, x1, y1;
-                Aresta resp[] = new Aresta[aresta];
-
-                //Verifica cada aresta
-                for (int i = aresta - 1; i > 0; i--) {
-                    //Condição para verificar as aresta até o número de vértices -1
-                    if (teste != vertice - 1) {
-                        //Usa um outro método para verificar o pai de cada vértice
-                        if (procura(a[i].x) != procura(a[i].y)) {
-                            //Concatena o peso na variável
-                            pesoMax += a[i].peso;  
-                            resp[teste] = a[i];
-                            
-                                x1 = pai[a[i].x];
-                                y1 = pai[a[i].y];
-                            
-                            pai[a[i].x] = cont;
-                            pai[a[i].y] = cont; 
-                            
-                            
-                            //Percorre todo o vetor pai atualizando o conteúdo
-                            for (int j = 0; j < pai.length; j++) {
-                                if (pai[j] == x1 || pai[j] == y1) {
-                                    pai[a[i].x] = cont;
-                                    pai[a[i].y] = cont;
-                                }
-                            }
-                            cont++; //usado para controle a atualização do vetor pai
-                        }
-                        teste++; //usado para controlar a quantidade de aresta que será usada
-                    } else {
-                        break;
+                        vetor[j] = new Aresta(o, d, p);//Cria uma nova aresta a armazena ela no vetor de arestas
                     }
+
+                    //Chama o método para calcular o peso das arestas e o retorno é armazenado na variável resutlado
+                    int resultado = agm(vetor, vertice, aresta);
+                    
+                    //Formata o resusltado exibindo o peso máximo das arestas do grafo
+                    JOptionPane.showMessageDialog(null, "Peso máximo do " + (i+1) + "º grafo = " + resultado);
                 }
-                
-                //Exibe numa simples janela o peso máximo
-                JOptionPane.showMessageDialog(null, "Peso Máximo da árvore: "+pesoMax);
-                //Fecha o programa ecerrando a execução
-                //dispose();
-                
+
+                //Feche o buffer de leitura do arquivo
+                br.close();
+
             } catch (Exception ex) {
                 Logger.getLogger(Programa.class
                         .getName()).log(Level.SEVERE, null, ex);
