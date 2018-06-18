@@ -192,6 +192,9 @@ public class Programa extends javax.swing.JFrame {
                 //Loop para varrer o arquivo conforme a quantidade de teste
                 for (int i = 0; i < Nteste; i++) {
                     linha = br.readLine();
+                    if(linha == null)
+                        continue;
+                        
                     int vertice = Integer.parseInt(String.valueOf(linha.charAt(0))); //Armazena a quantidade de vértices do grafo
                     int aresta = Integer.parseInt(String.valueOf(linha.charAt(2))); //Armazena a quantidade de arestas do grafo.
                     vetor = new Aresta[aresta]; //Cria um vetor conforme o tamanho das arestas
@@ -199,11 +202,14 @@ public class Programa extends javax.swing.JFrame {
                     //Loop para ler linha al inha do arquivo
                     for (int j = 0; j < aresta; j++) {
                         linha = br.readLine();
-
-                        o = Integer.parseInt(String.valueOf(linha.charAt(0))); //É captura a primeira posição da linha lida e convertida para inteiro
+                        int[] result = Arquivo.getIntArray2(linha);
+                        o = result[0];
+                        d = result[1];
+                        p = result[2];
+                        /*o = Integer.parseInt(String.valueOf(linha.charAt(0))); //É captura a primeira posição da linha lida e convertida para inteiro
                         d = Integer.parseInt(String.valueOf(linha.charAt(2)));
-                        p = Integer.parseInt(String.valueOf(linha.charAt(4)));
-
+                        p = Integer.parseInt(String.valueOf(linha.charAt(4)));*/
+                        
                         vetor[j] = new Aresta(o, d, p);//Cria uma nova aresta a armazena ela no vetor de arestas
                     }
 
