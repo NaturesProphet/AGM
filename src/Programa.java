@@ -173,73 +173,81 @@ public class Programa extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         Aresta vetor[] = null; //Vetor vazio para receber os dados que seram lidos do arquivo
         String arquivoVazio = null;
-        try {
-            arquivoVazio = Arquivo.getFirstLine(jTextField1.getText().trim());
-        } catch (IOException ex) {
-            Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-        //Verifica se o arquivo informado existe
-        if (!Arquivo.AreYouHere(jTextField1.getText())) {
-            JOptionPane.showMessageDialog(null, "O arquivo não existe!");
+        //Verifica se foi selecionado algum arquivo.
+        if (jTextField1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Nenhum arquivo selecionado. Por favor escolha um arquivo.");
 
-        } else if (arquivoVazio == null) {
-            JOptionPane.showMessageDialog(null, "O arquivo está vazio!");
         } else {
+
             try {
+                arquivoVazio = Arquivo.getFirstLine(jTextField1.getText().trim()); //Verifica se o arquivo está vazio
+            } catch (IOException ex) {
+                Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-                BufferedReader br = new BufferedReader(new FileReader(jTextField1.getText()));
+            if (!Arquivo.AreYouHere(jTextField1.getText())) { //Verifica se o arquivo informado existe
+                JOptionPane.showMessageDialog(null, "O arquivo não existe!");
 
-                int Nteste = Integer.parseInt(br.readLine()); //Lê a primeira linha do arquivo e armazena a quantidade de testes
+            } else if (arquivoVazio == null) { //Continuação: Verifica se o arquivo está vazio
+                JOptionPane.showMessageDialog(null, "O arquivo está vazio!");
+            } else {
+                try {
 
-                String linha; //Variável para armazena linha a linha do arquivo.
-                int o = 0, d = 0, p = 0; //Variáveis auxiliares para armazenar origem, destino e peso da aresta
+                    BufferedReader br = new BufferedReader(new FileReader(jTextField1.getText()));
 
-                //Somente para formatar o texto de exibição para o usuário sobre a quantidade de grafos contidos no arquivo
-                if (Nteste == 1) {
-                    JOptionPane.showMessageDialog(null, "Foi identificado " + Nteste + " grafo no arquivo.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Foram identificados " + Nteste + " grafos no arquivo.");
-                }
+                    int Nteste = Integer.parseInt(br.readLine()); //Lê a primeira linha do arquivo e armazena a quantidade de testes
 
-                //Loop para varrer o arquivo conforme a quantidade de teste
-                for (int i = 0; i < Nteste; i++) {
-                    linha = br.readLine();
-                    if (linha == null) {
-                        continue;
+                    String linha; //Variável para armazenar linha a linha do arquivo.
+                    int o = 0, d = 0, p = 0; //Variáveis auxiliares para armazenar origem, destino e peso da aresta
+
+                    //Somente para formatar o texto de exibição para o usuário sobre a quantidade de grafos contidos no arquivo
+                    if (Nteste == 1) {
+                        JOptionPane.showMessageDialog(null, "Foi identificado " + Nteste + " grafo no arquivo.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Foram identificados " + Nteste + " grafos no arquivo.");
                     }
 
-                    int vertice = Integer.parseInt(String.valueOf(linha.charAt(0))); //Armazena a quantidade de vértices do grafo
-                    int aresta = Integer.parseInt(String.valueOf(linha.charAt(2))); //Armazena a quantidade de arestas do grafo.
-                    vetor = new Aresta[aresta]; //Cria um vetor conforme o tamanho das arestas
-
-                    //Loop para ler linha al inha do arquivo
-                    for (int j = 0; j < aresta; j++) {
+                    //Loop para varrer o arquivo conforme a quantidade de teste
+                    for (int i = 0; i < Nteste; i++) {
                         linha = br.readLine();
-                        int[] result = Arquivo.getIntArray2(linha);
-                        o = result[0];
-                        d = result[1];
-                        p = result[2];
-                        //É captura a primeira posição da linha lida e convertida para inteiro                        
+                        if (linha == null) {
+                            continue;
+                        }
 
-                        vetor[j] = new Aresta(o, d, p);//Cria uma nova aresta a armazena ela no vetor de arestas
+                        int vertice = Integer.parseInt(String.valueOf(linha.charAt(0))); //Armazena a quantidade de vértices do grafo
+                        int aresta = Integer.parseInt(String.valueOf(linha.charAt(2))); //Armazena a quantidade de arestas do grafo.
+                        vetor = new Aresta[aresta]; //Cria um vetor conforme o tamanho das arestas
+
+                        //Loop para ler linha al inha do arquivo
+                        for (int j = 0; j < aresta; j++) {
+                            linha = br.readLine();
+                            int[] result = Arquivo.getIntArray2(linha);
+                            o = result[0];
+                            d = result[1];
+                            p = result[2];
+                            //É captura a primeira posição da linha lida e convertida para inteiro                        
+
+                            vetor[j] = new Aresta(o, d, p);//Cria uma nova aresta a armazena ela no vetor de arestas
+                        }
+
+                        //Chama o método para calcular o peso das arestas e o retorno é armazenado na variável resutlado
+                        int resultado = agm(vetor, vertice, aresta);
+
+                        //Formata o resusltado exibindo o peso máximo das arestas do grafo
+                        JOptionPane.showMessageDialog(null, "Peso máximo do " + (i + 1) + "º grafo = " + resultado);
                     }
 
-                    //Chama o método para calcular o peso das arestas e o retorno é armazenado na variável resutlado
-                    int resultado = agm(vetor, vertice, aresta);
+                    //Feche o buffer de leitura do arquivo
+                    br.close();
 
-                    //Formata o resusltado exibindo o peso máximo das arestas do grafo
-                    JOptionPane.showMessageDialog(null, "Peso máximo do " + (i + 1) + "º grafo = " + resultado);
+                } catch (Exception ex) {
+                    Logger.getLogger(Programa.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
-
-                //Feche o buffer de leitura do arquivo
-                br.close();
-
-            } catch (Exception ex) {
-                Logger.getLogger(Programa.class
-                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
+
     }//GEN-LAST:event_jButton2MouseClicked
 
     /**
