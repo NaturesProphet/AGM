@@ -1,6 +1,7 @@
 
 import GERAL.Arquivo;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -174,11 +175,18 @@ public class Programa extends javax.swing.JFrame {
         //Verifica se o arquivo informado existe
         if (!Arquivo.AreYouHere(jTextField1.getText())) {
             JOptionPane.showMessageDialog(null, "O arquivo não existe!");
-        } else {
+            File file = new File(jTextField1.getText());
+            if(file.length() == -1){
+                JOptionPane.showMessageDialog(null, "O arquivo está vazio!");
+            }
+        } else {            
             try {
+                
                 BufferedReader br = new BufferedReader(new FileReader(jTextField1.getText()));
                 int Nteste = Integer.parseInt(br.readLine()); //Lê a primeira linha do arquivo e armazena a quantidade de testes
-
+               
+                
+                
                 String linha; //Variável para armazena linha a linha do arquivo.
                 int o = 0, d = 0, p = 0; //Variáveis auxiliares para armazenar origem, destino e peso da aresta
 
@@ -206,9 +214,7 @@ public class Programa extends javax.swing.JFrame {
                         o = result[0];
                         d = result[1];
                         p = result[2];
-                        /*o = Integer.parseInt(String.valueOf(linha.charAt(0))); //É captura a primeira posição da linha lida e convertida para inteiro
-                        d = Integer.parseInt(String.valueOf(linha.charAt(2)));
-                        p = Integer.parseInt(String.valueOf(linha.charAt(4)));*/
+                        //É captura a primeira posição da linha lida e convertida para inteiro                        
                         
                         vetor[j] = new Aresta(o, d, p);//Cria uma nova aresta a armazena ela no vetor de arestas
                     }
