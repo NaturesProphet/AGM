@@ -5,8 +5,5 @@ jdk:
 script:
   - ant
   - wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.1.0.1141-linux.zip
-  - apt-get update
-  - apt-get install unzip
-  - apt-get install -y jq
   - unzip sonar-scanner-cli-3.1.0.1141-linux.zip
   - ./sonar-scanner-3.1.0.1141-linux/bin/sonar-scanner
