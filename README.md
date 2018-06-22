@@ -25,7 +25,7 @@ O programa recebe um arquivo .txt que segue um padrão, esse arquivo representa 
 <li>Clique em executar e veja os resultados</li>
 </ul>
 
-# Autores
+## Autores
 
 ```bash
 Vitor Knupp Costa - @vkcosta
@@ -33,4 +33,9 @@ Vitor Knupp Costa - @vkcosta
 
 ```bash
 Mateus Garcia - @NaturesProphet
+```
+
+## Professor
+```bash
+André Costa
 ```
