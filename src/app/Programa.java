@@ -1,5 +1,7 @@
+package app;
 
-import GERAL.Arquivo;
+
+import Utils.Arquivo;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

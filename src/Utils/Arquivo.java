@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package GERAL;
+package Utils;
 
 /**
  *
@@ -91,7 +91,7 @@ public class Arquivo {
      *
      * @return Retorna um ArrayList contendo todas as linhas do arquivo
      * @author Mateus Garcia
-     * @param path caminho para o arquivo especificado
+     * @param patch caminho para o arquivo especificado
      * @throws IOException
      * @throws FileNotFoundException
      *
@@ -129,7 +129,7 @@ public class Arquivo {
      * @author Mateus Garcia
      * @param path caminho para o arquivo especificado
      * @param codigo String identica ao inicio da linha desejada.
-     * @throws IOException
+     * @throws IOException caso ocorram erros no processamento de arquivo
      * @throws Exception Caso mais de uma linha for encontrada com o código
      * @throws FileNotFoundException
      *
@@ -238,7 +238,7 @@ public class Arquivo {
      * @return Retorna um boolean. Se o arquivo existe, retorna TRUE, caso
      * contrário, retorna FALSE.
      * @author Mateus Garcia
-     * @param path caminho para o arquivo especificado
+     * @param patch caminho para o arquivo especificado
      *
      */
     public static boolean AreYouHere(String patch) {
