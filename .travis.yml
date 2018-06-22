@@ -1,0 +1,27 @@
+language: java
+jdk:
+  - oraclejdk8  
+dist: trusty
+sudo: required
+
+  stages:
+  - build
+  - quality
+
+build_job:
+  stage: build
+  script:
+     - ant
+   
+quality_job:
+    stage: quality
+    services:
+        - primetoninc/jdk:1.7
+
+    script:     
+     - wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.1.0.1141-linux.zip
+     - apt-get update
+     - apt-get install unzip
+     - apt-get install -y jq
+     - unzip sonar-scanner-cli-3.1.0.1141-linux.zip
+     - ./sonar-scanner-3.1.0.1141-linux/bin/sonar-scanner
