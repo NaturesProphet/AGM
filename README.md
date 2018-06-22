@@ -10,6 +10,9 @@ Aplicação Java com uma interface gráfica simples em Swing que simula um algor
 
 O programa recebe um arquivo .txt que segue um padrão, esse arquivo representa o grafo e após a execução do algoritmo ele exibe o peso máximo desse grafo.
 
+### Repositório no GitHub
+https://github.com/vkcosta/AGM
+
 ## Requiriments
 
 <ul>
