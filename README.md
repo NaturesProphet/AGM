@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/vkcosta/AGM.svg?branch=master)](https://travis-ci.org/vkcosta/AGM)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=agm&metric=alert_status)](https://sonarcloud.io/dashboard?id=agm)
 
-
-
 # AGM
 Árvore Geradora Máxima
 
@@ -20,3 +18,19 @@ O programa recebe um arquivo .txt que segue um padrão, esse arquivo representa 
 </ul>
 
 
+## Usage
+<ul>
+<li>Compile o projeto com o NetBeans e o execute. </li>
+<li>Escolha um arquivo com os grafos a serem analisados pelo app. <li>Um exemplo está dispoível na raiz do projeto com o nome "grafos.txt" </li></li>
+<li>Clique em executar e veja os resultados</li>
+</ul>
+
+# Autores
+
+```bash
+Vitor Knupp Costa - @vkcosta
+```
+
+```bash
+Mateus Garcia - @NaturesProphet
+```
