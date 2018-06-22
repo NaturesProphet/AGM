@@ -1,6 +1,5 @@
 package app;
 
-
 import Utils.Arquivo;
 import java.io.BufferedReader;
 import java.io.File;
@@ -175,6 +174,7 @@ public class Programa extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         Aresta vetor[] = null; //Vetor vazio para receber os dados que seram lidos do arquivo
         String arquivoVazio = null;
+        String resumo = "";
 
         //Verifica se foi selecionado algum arquivo.
         if (jTextField1.getText().equals("")) {
@@ -205,9 +205,9 @@ public class Programa extends javax.swing.JFrame {
 
                     //Somente para formatar o texto de exibição para o usuário sobre a quantidade de grafos contidos no arquivo
                     if (Nteste == 1) {
-                        JOptionPane.showMessageDialog(null, "Foi identificado " + Nteste + " grafo no arquivo.");
+                        resumo += "Foi identificado " + Nteste + " grafo no arquivo.\n";
                     } else {
-                        JOptionPane.showMessageDialog(null, "Foram identificados " + Nteste + " grafos no arquivo.");
+                        resumo += "Foram identificados " + Nteste + " grafos no arquivo.\n";
                     }
 
                     //Loop para varrer o arquivo conforme a quantidade de teste
@@ -237,9 +237,9 @@ public class Programa extends javax.swing.JFrame {
                         int resultado = agm(vetor, vertice, aresta);
 
                         //Formata o resusltado exibindo o peso máximo das arestas do grafo
-                        JOptionPane.showMessageDialog(null, "Peso máximo do " + (i + 1) + "º grafo = " + resultado);
+                        resumo += "Peso máximo do " + (i + 1) + "º grafo = " + resultado + "\n";
                     }
-
+                    JOptionPane.showMessageDialog(this, resumo);
                     //Feche o buffer de leitura do arquivo
                     br.close();
 
